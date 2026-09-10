@@ -1,0 +1,322 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -320,
+        32
+      ],
+      "id": "d1c6b5a9-7f72-4a42-a1fe-371fc34c14c1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19juM6rex_3BJ1bTmLbYtfDr8P-wGB3WriHcQK6qtEjI",
+          "mode": "list",
+          "cachedResultName": "business report",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19juM6rex_3BJ1bTmLbYtfDr8P-wGB3WriHcQK6qtEjI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19juM6rex_3BJ1bTmLbYtfDr8P-wGB3WriHcQK6qtEjI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        -80
+      ],
+      "id": "8342f647-960b-4905-a1ba-a3ff92b756d3",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5oUSOxY12bC92ffE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1uNsrLEC1ZlUcU1atjglCRNHwKbr17OAWFR4mp4mcixc",
+          "mode": "list",
+          "cachedResultName": "complaints",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uNsrLEC1ZlUcU1atjglCRNHwKbr17OAWFR4mp4mcixc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uNsrLEC1ZlUcU1atjglCRNHwKbr17OAWFR4mp4mcixc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        0,
+        128
+      ],
+      "id": "a2ca1c5f-5931-4f08-ab19-05c4b773ea99",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5oUSOxY12bC92ffE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the information calculate the profit (total revenue-total expense)check the revenue and expense that we didnot use large expense row number and write a proper report in way {{ $json.business_reports }}\ndont add extra data \n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        688,
+        -192
+      ],
+      "id": "633f6bd7-745b-4eb8-b2d3-ac871366fc1a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"profit\":\"\",\n  \"professional_report\":\"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        16
+      ],
+      "id": "e0d35fae-cc5f-4347-8661-4a1d1a04379d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pendingReports = items.filter(item => {\n  const status = String(item.json.status || '').trim().toLowerCase();\n\n  return status === '' || status === 'pending';\n});\n\nconst reports = pendingReports.map(item => ({\n  row_number: item.json.row_number,\n  business_name: item.json.business_name,\n  report_date: item.json.report_date,\n  total_revenue: item.json.total_revenue,\n  total_orders: item.json.total_order,\n  total_expenses: item.json.total_expense,\n  pending_orders: item.json.pending_orders\n}));\n\nreturn [\n  {\n    json: {\n      business_reports: reports,\n      report_count: reports.length\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        -80
+      ],
+      "id": "4c518185-56d6-4eb2-b9fd-b761aba5c79f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pendingComplaints = items.filter(item => {\n  const status = String(item.json.status || '').trim().toLowerCase();\n\n  return status === '' || status === 'pending';\n});\n\nconst complaints = pendingComplaints.map(item => ({\n  row_number: item.json.row_number,\n  customer_name: item.json.name,\n  customer_email: item.json.email,\n  order_id: item.json.order_id,\n  category: item.json.category,\n  description: item.json.description,\n  complaint_date: item.json.complaint_date\n}));\n\nreturn [\n  {\n    json: {\n      customer_complaints: complaints,\n      complaint_count: complaints.length\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        128
+      ],
+      "id": "9b0059a9-510e-4743-8e70-76b5a22ae674",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=check that the compalaint also find the priority of this complaint also check kind of complaintand write a professional messga to send the owner and the customer with subject{{ $json.customer_complaints }} dont add extra data",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        688,
+        192
+      ],
+      "id": "813909ed-fd32-47b1-a6b9-e6cd10287753",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        576,
+        400
+      ],
+      "id": "f5e29f54-a726-47d0-a39a-41dc485decd0",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Khug6Oq5EeMDvXzc",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"priority\":\"\",\n  \"subject\":\"\",\n  \"complaint_type\":\"\",\n  \"professional_message_for_owner\":\"\",\n  \"professional_message_for_customer\":\"\"\n  \n  \n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        400
+      ],
+      "id": "359f792f-298e-4e74-aa28-0a1184eccae8",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        544,
+        16
+      ],
+      "id": "16f243ae-bb54-4fe2-b1bc-3c91750f9a2a",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Khug6Oq5EeMDvXzc",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "30e0853616f6641ec1ad249f674906b0f714df3394e8312a431b5e7cfb963b65"
+  }
+}

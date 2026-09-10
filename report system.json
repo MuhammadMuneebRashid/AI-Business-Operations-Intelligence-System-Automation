@@ -1,0 +1,229 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9cb64195-e039-4a86-a9f2-87e70c45a215",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "da28b196-6a8c-4a23-93c2-62713bb565ba",
+      "name": "Webhook",
+      "webhookId": "9cb64195-e039-4a86-a9f2-87e70c45a215"
+    },
+    {
+      "parameters": {
+        "jsCode": "const fields=$input.first().json.body.data.fields;\nconst f1=fields.find(f=>f.label===\"Business Name:\");\nconst business_name=f1.value;\nconst f2=fields.find(f=>f.label===\"Report date:\");\nconst report_date=f2.value;\nconst f3=fields.find(f=>f.label===\"Total Revenue:\");\nconst total_revenue=f3.value;\nconst f4=fields.find(f=>f.label===\"Total Order:\");\nconst total_order=f4.value;\nconst f5=fields.find(f=>f.label===\"Total Expense:\");\nconst total_expense=f5.value;\nconst f6=fields.find(f=>f.label===\"Pending Orders:\");\nconst pending_orders=f6.value;\nreturn[{\n  business_name,\n  report_date,\n  total_revenue,\n  total_order,\n  total_expense,\n  pending_orders\n}]\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "4a14db06-ef46-4319-b2dc-b23247bb1125",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "62eb36d7-f9bf-4163-bcf2-e7d8d6ef2558",
+              "name": "business_name",
+              "value": "={{ $json.business_name }}",
+              "type": "string"
+            },
+            {
+              "id": "34a48664-33c5-43ed-992e-82fdb9e07a74",
+              "name": "report_date",
+              "value": "={{ $json.report_date }}",
+              "type": "string"
+            },
+            {
+              "id": "39475bb3-5f69-410b-8e75-753ded627b81",
+              "name": "total_revenue",
+              "value": "={{ $json.total_revenue }}",
+              "type": "string"
+            },
+            {
+              "id": "30152860-7696-47a7-83aa-6f4332407b11",
+              "name": "total_order",
+              "value": "={{ $json.total_order }}",
+              "type": "string"
+            },
+            {
+              "id": "f03f574b-3ddd-4b70-9fe4-fbfe56586bce",
+              "name": "total_expense",
+              "value": "={{ $json.total_expense }}",
+              "type": "string"
+            },
+            {
+              "id": "8b972ba4-1cec-403a-a9e5-91ae9bf64bd0",
+              "name": "pending_orders",
+              "value": "={{ $json.pending_orders }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "8347ecfd-ecfe-47c5-880c-7c47cce630c8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "19juM6rex_3BJ1bTmLbYtfDr8P-wGB3WriHcQK6qtEjI",
+          "mode": "list",
+          "cachedResultName": "business report",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19juM6rex_3BJ1bTmLbYtfDr8P-wGB3WriHcQK6qtEjI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19juM6rex_3BJ1bTmLbYtfDr8P-wGB3WriHcQK6qtEjI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "business_name",
+              "displayName": "business_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "report_date",
+              "displayName": "report_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_revenue",
+              "displayName": "total_revenue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_order",
+              "displayName": "total_order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "total_expense",
+              "displayName": "total_expense",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pending_orders",
+              "displayName": "pending_orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        0
+      ],
+      "id": "a91bfbcf-d7e5-44bc-967c-47b822d31779",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5oUSOxY12bC92ffE",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "30e0853616f6641ec1ad249f674906b0f714df3394e8312a431b5e7cfb963b65"
+  }
+}

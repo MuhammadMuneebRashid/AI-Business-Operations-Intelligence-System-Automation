@@ -1,0 +1,229 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9e630ffb-c724-4227-83ce-0bd11052eca2",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "18855484-20b8-45be-95a8-271b714b25f8",
+      "name": "Webhook",
+      "webhookId": "9e630ffb-c724-4227-83ce-0bd11052eca2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const fields=$input.first().json.body.data.fields;\nconst f1=fields.find(f=>f.label===\"Customer Name:\");\nconst name=f1.value;\nconst f2=fields.find(f=>f.label===\"Customer Email:\");\nconst email=f2.value;\nconst f3=fields.find(f=>f.label===\"Order Id:\");\nconst order_id=f3.value;\nconst f4=fields.find(f=>f.label===\"Complaint Category:\");\nconst value=f4.value[0];\nconst options=f4.options.find(o=>o.id===value)\nconst category=options.text;\nconst f5=fields.find(f=>f.label===\"Complaint Description:\");\nconst description=f5.value;\nconst f6=fields.find(f=>f.label===\"Complaint Date:\");\nconst complaint_date=f6.value;\n\n\nreturn[{\n  name,\n  email,\n  order_id,\n  category,\n  description,\n  complaint_date\n}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "db0f5026-01e6-4be4-8071-5a7c34e1382b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "115d3a55-02d3-42a3-8599-831393fd5ef2",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "e292d05b-afc2-4dd7-9e0e-d9f341ca2d51",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "87fa1ed0-8cfc-4cee-bfd7-5e607d35c204",
+              "name": "order_id",
+              "value": "={{ $json.order_id }}",
+              "type": "string"
+            },
+            {
+              "id": "1e4b53b9-12cb-43ec-bcac-001c4ecfa17f",
+              "name": "category",
+              "value": "={{ $json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "e87a1042-24ab-4263-84d3-8015b0b628d3",
+              "name": "description",
+              "value": "={{ $json.description }}",
+              "type": "string"
+            },
+            {
+              "id": "7c111422-ff95-4bb8-85bd-8575bb42ded0",
+              "name": "complaint_date",
+              "value": "={{ $json.complaint_date }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "89183f24-b012-441f-bcf7-2ee3c906f98b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1uNsrLEC1ZlUcU1atjglCRNHwKbr17OAWFR4mp4mcixc",
+          "mode": "list",
+          "cachedResultName": "complaints",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uNsrLEC1ZlUcU1atjglCRNHwKbr17OAWFR4mp4mcixc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uNsrLEC1ZlUcU1atjglCRNHwKbr17OAWFR4mp4mcixc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "order_id",
+              "displayName": "order_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "complaint_date",
+              "displayName": "complaint_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        0
+      ],
+      "id": "c5260e1a-1b8b-49b5-ada8-9691e11d9ff5",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5oUSOxY12bC92ffE",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "30e0853616f6641ec1ad249f674906b0f714df3394e8312a431b5e7cfb963b65"
+  }
+}
