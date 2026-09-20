@@ -471,6 +471,13 @@ More automation modules, analytics capabilities, AI insights, and business opera
 
 ---
 
+
+Forms:
+<img width="1920" height="1080" alt="form 1" src="https://github.com/user-attachments/assets/efa44349-b006-49f7-aaa9-46e3b9e19d1c" />
+<img width="1920" height="1080" alt="form 2" src="https://github.com/user-attachments/assets/b5cab0d2-8973-4b8e-b6f8-ddb52813ec7e" />
+<img width="1920" height="1080" alt="form 3" src="https://github.com/user-attachments/assets/57ab57a1-5ca2-4cae-be87-de6b8fb870a6" />
+<img width="1920" height="1080" alt="form 4" src="https://github.com/user-attachments/assets/971d8462-7233-43a5-9160-babda61dc90f" />
+
 <img width="1920" height="1080" alt="complaint project" src="https://github.com/user-attachments/assets/05bae8c7-6f15-4ef5-90a5-8d559086232b" />
 <img width="1920" height="1080" alt="reporting project" src="https://github.com/user-attachments/assets/38fd3b10-9704-4650-80ee-d48deb7b562b" />
 Sales Data Analyzer: <img width="1920" height="1080" alt="sales data" src="https://github.com/user-attachments/assets/21cb7b38-0f10-489f-a220-ae60b821a39d" />
